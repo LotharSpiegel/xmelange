@@ -1,16 +1,17 @@
+from elements import xsdElement
 
 
-class xsdElementType(object):
+class xsdBuiltinSimpleType(xsdElement):
     pass
 
 
-class xsdBoolean(xsdElementType):
-    pass
+class xsdBoolean(xsdBuiltinSimpleType):
+    tag = 'boolean'
 
 
-class xsdInteger(xsdElementType):
-    pass
+class xsdInteger(xsdBuiltinSimpleType):
+    tag = 'integer'
 
 
-class xsdString(xsdElementType):
-    pas
+class xsdString(xsdBuiltinSimpleType):
+    tag = 'string'

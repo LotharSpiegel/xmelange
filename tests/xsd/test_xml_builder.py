@@ -22,3 +22,12 @@ class TestXmlBuilder:
         tag = self.builder.build_xsd_tag(type='element')
         element = self.builder.build_element(tag=tag)
         print(self.builder.tostring(element))
+
+
+def main():
+    builder = XmlBuilder()
+    tag = builder.build_xsd_tag(type='element')
+    root = xsdElement.build_element(tag)
+
+if __name__ == '__main__':
+    main()
