@@ -94,7 +94,6 @@ def tostring(element, pretty_print=True, xml_declaration=True, encoding='UTF-8')
             encoding=encoding).decode()
 
 
-
 if __name__ == '__main__':
     el = xsdSimpleType.restriction(name='myInteger',
         base=xsdInteger,

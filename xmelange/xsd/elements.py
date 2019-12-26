@@ -16,6 +16,7 @@ class xsd(xmlNamespace):
     tag = None
     name = None
     xsd_type = None
+    type_prefix = xmlNamespace.xsd_prefix
 
     def build_tag(self, tag_name, prefix=None):
         if prefix is None:
@@ -25,9 +26,17 @@ class xsd(xmlNamespace):
     def build_xsd_tag(self, type):
         return etree.QName(self.nsmap[self.xsd_prefix], type)
 
-    def build_xsd_type(self, type_name):
-        return '{xsd_prefix}:{type_name}'.format(
-            xsd_prefix=self.xsd_prefix, type_name=type_name)
+    def build_xsd_type(self, xsd_type):
+        if isinstance(xsd_type, xsdElement):
+            type_name = xsd_type.name
+            type_prefix = xsd_type.type_prefix
+        else:
+            type_name = xsd_type
+            type_prefix = self.type_prefix
+        if type_prefix is None:
+            return type_name
+        return '{type_prefix}:{type_name}'.format(
+            type_prefix=type_prefix, type_name=type_name)
 
     def xsd_attributes(self):
         attrib = {}
