@@ -13,5 +13,9 @@ class xsdInteger(xsdBuiltinSimpleType):
     tag = 'integer'
 
 
+class xsdPositiveInteger(xsdBuiltinSimpleType):
+    tag = 'positiveInteger'
+
+
 class xsdString(xsdBuiltinSimpleType):
     tag = 'string'

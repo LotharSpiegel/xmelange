@@ -14,9 +14,16 @@ class xmlNamespace:
 class xsd(xmlNamespace):
 
     tag = None
-    name = None
-    xsd_type = None
+    attrib = None
     type_prefix = xmlNamespace.xsd_prefix
+
+    def __init__(self, **attrib):
+        """attrib-dict:
+            name:
+            type:
+            ref: reference an existing element instead of declaring a new one
+        """
+        self.attrib = dict(attrib)
 
     def build_tag(self, tag_name, prefix=None):
         if prefix is None:
@@ -27,6 +34,8 @@ class xsd(xmlNamespace):
         return etree.QName(self.nsmap[self.xsd_prefix], type)
 
     def build_xsd_type(self, xsd_type):
+        if xsd_type is None:
+            return None
         if isinstance(xsd_type, xsdElement):
             type_name = xsd_type.name
             type_prefix = xsd_type.type_prefix
@@ -39,11 +48,15 @@ class xsd(xmlNamespace):
             type_prefix=type_prefix, type_name=type_name)
 
     def xsd_attributes(self):
+        if self.attrib is None:
+            return {}
         attrib = {}
-        if self.name is not None:
-            attrib['name'] = self.name
-        if self.xsd_type is not None:
-            attrib['type'] = self.build_xsd_type(self.xsd_type)
+        for key, value in self.attrib.items():
+            if key == 'type':
+                value = self.build_xsd_type(value)
+            if value is None:
+                continue
+            attrib[key] = value
         return attrib
 
     def xsd(self, parent=None):
@@ -66,23 +79,23 @@ class xsd(xmlNamespace):
             el.text = value
         return el
 
+    def __getattr__(self, key):
+        if key == 'attrib' or self.attrib is None:
+            raise AttributeError()
+        if key in self.attrib:
+            return self.attrib[key]
+
 
 class xsdElement(xsd):
-
     tag = 'element'
 
-    def __init__(self, name, xsd_type):
-        self.name = name
-        self.xsd_type = xsd_type
-
-
-
-class xsdAttribute:
-
-    def __init__(self, name, type, value):
-        self.name = name
-        self.type = type
-        self.value = value
+    def xsd(self, parent=None):
+        el = super().xsd(parent=parent)
+        # handle inline types:
+        if isinstance(self.type, xsdElement):
+            if self.type.name is None:
+                inline_type = self.type.xsd(parent=el)
+        return el
 
 
 def tostring(element, pretty_print=True, xml_declaration=True, encoding='UTF-8'):

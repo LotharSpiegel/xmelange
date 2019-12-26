@@ -18,10 +18,10 @@ Examples:
 
 from lxml import etree
 from builtin_simple_types import *
-from elements import xsdElement
+from elements import xsd, xsdElement
 
 
-class xsdRestrictionFacet(xsdElement):
+class xsdRestrictionFacet(xsd):
     tag = None
 
     def __init__(self, value):
@@ -45,7 +45,15 @@ class xsdRestrictionMaxIncluse(xsdRestrictionFacet):
     tag = 'maxInclusive'
 
 
-class xsdRestriction(xsdElement):
+class xsdRestrictionMinExclusive(xsdRestrictionFacet):
+    tag = 'minExclusive'
+
+
+class xsdRestrictionMaxExclusive(xsdRestrictionFacet):
+    tag = 'maxExclusive'
+
+
+class xsdRestriction(xsd):
 
     tag = 'restriction'
 
@@ -55,7 +63,10 @@ class xsdRestriction(xsdElement):
 
     def xsd_attributes(self):
         attrib = super().xsd_attributes()
-        attrib['base'] = self.build_xsd_type(self.base.tag)
+        if hasattr(self.base, 'tag'):
+            attrib['base'] = self.build_xsd_type(self.base.tag)
+        else:
+            attrib['base'] = self.base
         return attrib
 
     def xsd(self, parent=None):
