@@ -16,9 +16,8 @@ Examples:
 ! Simple types cannot have attributes
 """
 
-from lxml import etree
-from builtin_simple_types import *
-from elements import xsd, xsdElement
+from xmelange.xsd.builtin_simple_types import *
+from xmelange.xsd.elements import xsd, xsdElement
 
 
 class xsdRestrictionFacet(xsd):
@@ -94,26 +93,3 @@ class xsdSimpleType(xsdElement):
         xsd_restriction = xsdRestriction(base=base, facets=facets)
         simple_type = xsdSimpleType(name=name, restriction=xsd_restriction)
         return simple_type
-
-
-
-def tostring(element, pretty_print=True, xml_declaration=True, encoding='UTF-8'):
-    return etree.tostring(
-            element,
-            pretty_print=pretty_print,
-            xml_declaration=xml_declaration,
-            encoding=encoding).decode()
-
-
-if __name__ == '__main__':
-    el = xsdSimpleType.restriction(name='myInteger',
-        base=xsdInteger,
-        facets=[xsdRestrictionMinIncluse(value="10000"),
-                xsdRestrictionMaxIncluse(value="99999")])
-    xsd_el = el.xsd()
-    print(tostring(xsd_el))
-
-    el = xsdSimpleType.restriction(name='SKU',
-        base=xsdString,
-        facets=[xsdRestrictionPattern(value="\d{3}-[A-Z]{2}")])
-    print(tostring(el.xsd()))

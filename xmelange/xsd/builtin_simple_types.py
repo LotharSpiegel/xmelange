@@ -1,4 +1,4 @@
-from elements import xsdElement
+from xmelange.xsd.elements import xsdElement
 
 
 class xsdBuiltinSimpleType(xsdElement):
