@@ -25,7 +25,8 @@ class xsd(xmlNamespace):
         """
         self.attrib = dict(attrib)
 
-    def build_tag(self, tag_name, prefix=None):
+    @staticmethod
+    def build_tag(tag_name, prefix=None):
         if prefix is None:
             return tag_name
         return etree.QName(prefix, tag_name)
@@ -70,7 +71,7 @@ class xsd(xmlNamespace):
             return etree.SubElement(parent, tag, attrib=attrib)
 
     def xml(self, value, parent=None):
-        tag = self.build_tag(tag_name=self.name)
+        tag = xsd.build_tag(tag_name=self.name)
         if parent is None:
             el = etree.Element(tag, nsmap=self.nsmap)
         else:

@@ -52,23 +52,22 @@ def build_UsAddressType():
 
 
 def build_PurchaseOrderType(UsAddressType, ItemsType):
-    sequence = xsdSequence(elements=[
-        xsdElement(name='shipTo', type=UsAddressType),
-        xsdElement(name='billto', type=UsAddressType),
-        xsdElement(ref='comment', minOccurs='0'),
-        xsdElement(name='items', type=ItemsType)
-    ])
-    PurchaseOrderType = xsdComplexType(name='PurchaseOrderType',
-                                       sequence=sequence,
-                                       attributes=[xsdAttribute(name='orderDate', type='date')])
-    return PurchaseOrderType
+    return xsdComplexTypeBuilder().name('PurchaseOrderType') \
+        .sequence() \
+        .element(name='shipTo', type=UsAddressType) \
+        .element(name='billto', type=UsAddressType) \
+        .element(ref='comment', minOccurs='0') \
+        .element(name='items', type=ItemsType) \
+        .build() \
+        .attribute(name='orderDate', type='date') \
+        .build()
 
 
-def build_myIntegerType():
-    return xsdSimpleType.restriction(name='myInteger',
-                                     base=xsdInteger,
-                                     facets=[xsdRestrictionMinIncluse(value="10000"),
-                                             xsdRestrictionMaxIncluse(value="99999")])
+# def build_myIntegerType():
+#    return xsdSimpleType.restriction(name='myInteger',
+#                                     base=xsdInteger,
+#                                     facets=[xsdRestrictionMinIncluse(value="10000"),
+#                                             xsdRestrictionMaxIncluse(value="99999")])
 
 
 def build_SKUType():
@@ -78,9 +77,9 @@ def build_SKUType():
 
 
 def main():
-    print('myInteger type:')
-    myIntegerType = build_myIntegerType()
-    print(tostring(myIntegerType.xsd()))
+    # print('myInteger type:')
+    # myIntegerType = build_myIntegerType()
+    # print(tostring(myIntegerType.xsd()))
 
     print('SKU type:')
     SKUType = build_SKUType()
