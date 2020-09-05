@@ -16,7 +16,6 @@ Examples:
 ! Simple types cannot have attributes
 """
 
-from xmelange.xsd.builtin_simple_types import *
 from xmelange.xsd.elements import xsd, xsdElement
 
 
@@ -24,6 +23,7 @@ class xsdRestrictionFacet(xsd):
     tag = None
 
     def __init__(self, value):
+        super().__init__()
         self.value = value
 
     def xsd_attributes(self):
@@ -53,10 +53,10 @@ class xsdRestrictionMaxExclusive(xsdRestrictionFacet):
 
 
 class xsdRestriction(xsd):
-
     tag = 'restriction'
 
     def __init__(self, base, facets):
+        super().__init__()
         self.base = base
         self.facets = facets
 
@@ -76,7 +76,6 @@ class xsdRestriction(xsd):
 
 
 class xsdSimpleType(xsdElement):
-
     tag = 'simpleType'
 
     def __init__(self, name, restriction):

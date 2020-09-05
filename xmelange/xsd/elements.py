@@ -2,7 +2,6 @@ from lxml import etree
 
 
 class xmlNamespace:
-
     xsd_prefix = 'xsd'
 
     nsmap = {
@@ -12,7 +11,6 @@ class xmlNamespace:
 
 
 class xsd(xmlNamespace):
-
     tag = None
     attrib = None
     type_prefix = xmlNamespace.xsd_prefix
@@ -100,10 +98,10 @@ class xsdElement(xsd):
 
 def tostring(element, pretty_print=True, xml_declaration=True, encoding='UTF-8'):
     return etree.tostring(
-            element,
-            pretty_print=pretty_print,
-            xml_declaration=xml_declaration,
-            encoding=encoding).decode()
+        element,
+        pretty_print=pretty_print,
+        xml_declaration=xml_declaration,
+        encoding=encoding).decode()
 
 
 if __name__ == '__main__':
