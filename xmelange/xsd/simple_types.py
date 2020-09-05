@@ -79,7 +79,7 @@ class xsdSimpleType(xsdElement):
     tag = 'simpleType'
 
     def __init__(self, name, restriction):
-        super().__init__(name=name, xsd_type=None)
+        super().__init__(name=name, type=None)
         self.restriction = restriction
 
     def xsd(self, parent=None):

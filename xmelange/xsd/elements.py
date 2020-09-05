@@ -2,6 +2,7 @@ from lxml import etree
 
 
 class xmlNamespace:
+
     xsd_prefix = 'xsd'
 
     nsmap = {
@@ -11,6 +12,7 @@ class xmlNamespace:
 
 
 class xsd(xmlNamespace):
+
     tag = None
     attrib = None
     type_prefix = xmlNamespace.xsd_prefix
