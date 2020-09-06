@@ -98,18 +98,12 @@ class xsdElement(xsd):
                 inline_type = self.type.xsd(parent=el)
         return el
 
+    def to_str(self, pretty_print=True, xml_declaration=True, encoding='UTF-8'):
+        return etree.tostring(
+            self.xsd(),
+            pretty_print=pretty_print,
+            xml_declaration=xml_declaration,
+            encoding=encoding).decode()
 
-def tostring(element, pretty_print=True, xml_declaration=True, encoding='UTF-8'):
-    return etree.tostring(
-        element,
-        pretty_print=pretty_print,
-        xml_declaration=xml_declaration,
-        encoding=encoding).decode()
-
-
-if __name__ == '__main__':
-    el = xsdElement(name='comment', xsd_type='string')
-    xsd_el = el.xsd()
-    xml_el = el.xml(value="bla")
-    print(tostring(xsd_el))
-    print(tostring(xml_el))
+    def __str__(self):
+        return self.to_str()

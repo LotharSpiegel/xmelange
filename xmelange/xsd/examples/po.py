@@ -7,52 +7,44 @@ Examples are mostly taken from this extensive description of xsd
 from xmelange.xsd.simple_types import *
 from xmelange.xsd.complex_types import *
 from xmelange.xsd.builtin_simple_types import *
-from xmelange.xsd.utils import tostring
 
-
-def build_ItemsType():
-    quantityInlineType = xsdSimpleType(
-        name=None,
-        restriction=xsdRestriction(
-            base=xsdPositiveInteger,
-            facets=[xsdRestrictionMaxExclusive(value='100')]
-        )
+quantityInlineType = xsdSimpleType(
+    name=None,
+    restriction=xsdRestriction(
+        base=xsdPositiveInteger,
+        facets=[xsdRestrictionMaxExclusive(value='100')]
     )
-    sequence = xsdSequence(elements=[
-        xsdElement(name='productName', type='string'),
-        xsdElement(name='quantity', type=quantityInlineType)
-    ])
-    itemElementInlineType = xsdComplexType(
-        name=None,  # itemElement has inline type (i.e. anonymous type)
-        sequence=sequence,
-        attributes=[xsdAttribute(name='partNum', type='SKU',
-                                 use='required')]
-    )
-    itemElement = xsdElement(name='item', type=itemElementInlineType,
-                             minOccurs='0', maxOccurs='unbounded')
-    sequence = xsdSequence(elements=[
-        itemElement
-    ])
-    ItemsType = xsdComplexType(name='Items',
-                               sequence=sequence)
-    return ItemsType
+)
+sequence = xsdSequence(elements=[
+    xsdElement(name='productName', type='string'),
+    xsdElement(name='quantity', type=quantityInlineType)
+])
+itemElementInlineType = xsdComplexType(
+    name=None,  # itemElement has inline type (i.e. anonymous type)
+    sequence=sequence,
+    attributes=[xsdAttribute(name='partNum', type='SKU',
+                             use='required')]
+)
+itemElement = xsdElement(name='item', type=itemElementInlineType,
+                         minOccurs='0', maxOccurs='unbounded')
+sequence = xsdSequence(elements=[
+    itemElement
+])
+ItemsType = xsdComplexType(name='Items',
+                           sequence=sequence)
 
+sequence = xsdSequence(elements=[
+    xsdElement(name='name', type='string'),
+    xsdElement(name='street', type='string'),
+    xsdElement(name='city', type='string'),
+    xsdElement(name='state', type='string'),
+    xsdElement(name='zip', type='decimal')])
+UsAddressType = xsdComplexType(name='USAddress',
+                               sequence=sequence,
+                               attributes=[xsdAttribute(name="country", type="NMTOKEN")])
 
-def build_UsAddressType():
-    sequence = xsdSequence(elements=[
-        xsdElement(name='name', type='string'),
-        xsdElement(name='street', type='string'),
-        xsdElement(name='city', type='string'),
-        xsdElement(name='state', type='string'),
-        xsdElement(name='zip', type='decimal')])
-    UsAddressType = xsdComplexType(name='USAddress',
-                                   sequence=sequence,
-                                   attributes=[xsdAttribute(name="country", type="NMTOKEN")])
-    return UsAddressType
-
-
-def build_PurchaseOrderType(UsAddressType, ItemsType):
-    return xsdComplexTypeBuilder().name('PurchaseOrderType') \
+PurchaseOrderType = \
+    xsdComplexTypeBuilder().name('PurchaseOrderType') \
         .sequence() \
         .element(name='shipTo', type=UsAddressType) \
         .element(name='billto', type=UsAddressType) \
@@ -70,10 +62,14 @@ def build_PurchaseOrderType(UsAddressType, ItemsType):
 #                                             xsdRestrictionMaxIncluse(value="99999")])
 
 
-def build_SKUType():
-    return xsdSimpleType.restriction(name='SKU',
+SKUType = xsdSimpleType.restriction(name='SKU',
                                      base=xsdString,
                                      facets=[xsdRestrictionPattern(value="\d{3}-[A-Z]{2}")])
+
+
+def print_xsd(heading, xsd_type):
+    print(heading)
+    print(xsd_type)
 
 
 def main():
@@ -81,21 +77,10 @@ def main():
     # myIntegerType = build_myIntegerType()
     # print(tostring(myIntegerType.xsd()))
 
-    print('SKU type:')
-    SKUType = build_SKUType()
-    print(tostring(SKUType.xsd()))
-
-    print('Items type:')
-    ItemsType = build_ItemsType()
-    print(tostring(ItemsType.xsd()))
-
-    print('UsAddress type:')
-    UsAddressType = build_UsAddressType()
-    print(tostring(UsAddressType.xsd()))
-
-    print('PurchaseOrder type')
-    PurchaseOrderType = build_PurchaseOrderType(UsAddressType, ItemsType)
-    print(tostring(PurchaseOrderType.xsd()))
+    print_xsd('SKUType:', SKUType)
+    print_xsd('ItemsType:', ItemsType)
+    print_xsd('UsAddressType:', UsAddressType)
+    print_xsd('PurchaseOrderType:', PurchaseOrderType)
 
 
 if __name__ == '__main__':
