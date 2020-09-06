@@ -8,52 +8,52 @@ from xmelange.xsd.simple_types import *
 from xmelange.xsd.complex_types import *
 from xmelange.xsd.builtin_simple_types import *
 
-quantityInlineType = xsdSimpleType(
+quantityInlineType = XsdSimpleType(
     name=None,
-    restriction=xsdRestriction(
-        base=xsdPositiveInteger,
-        facets=[xsdRestrictionMaxExclusive(value='100')]
+    restriction=XsdRestriction(
+        base=XsdPositiveInteger,
+        facets=[XsdRestrictionMaxExclusive(value='100')]
     )
 )
-sequence = xsdSequence(elements=[
-    xsdElement(name='productName', type='string'),
-    xsdElement(name='quantity', type=quantityInlineType)
-])
-itemElementInlineType = xsdComplexType(
-    name=None,  # itemElement has inline type (i.e. anonymous type)
-    sequence=sequence,
-    attributes=[xsdAttribute(name='partNum', type='SKU',
-                             use='required')]
-)
-itemElement = xsdElement(name='item', type=itemElementInlineType,
-                         minOccurs='0', maxOccurs='unbounded')
-sequence = xsdSequence(elements=[
-    itemElement
-])
-ItemsType = xsdComplexType(name='Items',
-                           sequence=sequence)
 
-sequence = xsdSequence(elements=[
-    xsdElement(name='name', type='string'),
-    xsdElement(name='street', type='string'),
-    xsdElement(name='city', type='string'),
-    xsdElement(name='state', type='string'),
-    xsdElement(name='zip', type='decimal')])
-UsAddressType = xsdComplexType(name='USAddress',
-                               sequence=sequence,
-                               attributes=[xsdAttribute(name="country", type="NMTOKEN")])
+# itemElement has inline type (i.e. anonymous type)
+itemElementInlineType = XsdComplexTypeBuilder() \
+    .name(None) \
+    .sequence() \
+    .element(name='productName', type='string') \
+    .element(name='quantity', type=quantityInlineType) \
+    .build_sequence() \
+    .attribute(name='partNum', type='SKU', use='required') \
+    .build()
+
+ItemsType = XsdComplexTypeBuilder().name('Items') \
+    .sequence() \
+    .element(name='item', type=itemElementInlineType,
+             minOccurs='0', maxOccurs='unbounded') \
+    .build_sequence() \
+    .build()
+
+UsAddressType = XsdComplexTypeBuilder().name('USAddress') \
+    .sequence() \
+    .element(name='name', type='string') \
+    .element(name='street', type='string') \
+    .element(name='city', type='string') \
+    .element(name='state', type='string') \
+    .element(name='zip', type='decimal') \
+    .build_sequence() \
+    .attribute(name="country", type="NMTOKEN") \
+    .build()
 
 PurchaseOrderType = \
-    xsdComplexTypeBuilder().name('PurchaseOrderType') \
+    XsdComplexTypeBuilder().name('PurchaseOrderType') \
         .sequence() \
         .element(name='shipTo', type=UsAddressType) \
         .element(name='billto', type=UsAddressType) \
         .element(ref='comment', minOccurs='0') \
         .element(name='items', type=ItemsType) \
-        .build() \
+        .build_sequence() \
         .attribute(name='orderDate', type='date') \
         .build()
-
 
 # def build_myIntegerType():
 #    return xsdSimpleType.restriction(name='myInteger',
@@ -62,9 +62,9 @@ PurchaseOrderType = \
 #                                             xsdRestrictionMaxIncluse(value="99999")])
 
 
-SKUType = xsdSimpleType.restriction(name='SKU',
-                                     base=xsdString,
-                                     facets=[xsdRestrictionPattern(value="\d{3}-[A-Z]{2}")])
+SKUType = XsdSimpleType.restriction(name='SKU',
+                                    base=XsdString,
+                                    facets=[XsdRestrictionPattern(value="\d{3}-[A-Z]{2}")])
 
 
 def print_xsd(heading, xsd_type):

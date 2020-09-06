@@ -1,21 +1,21 @@
-from xmelange.xsd.elements import xsdElement
+from xmelange.xsd.elements import XsdElement
 
 
-class xsdBuiltinSimpleType(xsdElement):
+class XsdBuiltinSimpleType(XsdElement):
     pass
 
 
-class xsdBoolean(xsdBuiltinSimpleType):
+class XsdBoolean(XsdBuiltinSimpleType):
     tag = 'boolean'
 
 
-class xsdInteger(xsdBuiltinSimpleType):
+class XsdInteger(XsdBuiltinSimpleType):
     tag = 'integer'
 
 
-class xsdPositiveInteger(xsdBuiltinSimpleType):
+class XsdPositiveInteger(XsdBuiltinSimpleType):
     tag = 'positiveInteger'
 
 
-class xsdString(xsdBuiltinSimpleType):
+class XsdString(XsdBuiltinSimpleType):
     tag = 'string'

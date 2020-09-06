@@ -1,7 +1,7 @@
 from lxml import etree
 
 
-class xmlNamespace:
+class XmlNamespace:
 
     xsd_prefix = 'xsd'
 
@@ -11,11 +11,11 @@ class xmlNamespace:
     }
 
 
-class xsd(xmlNamespace):
+class Xsd(XmlNamespace):
 
     tag = None
     attrib = None
-    type_prefix = xmlNamespace.xsd_prefix
+    type_prefix = XmlNamespace.xsd_prefix
 
     def __init__(self, **attrib):
         """attrib-dict:
@@ -37,7 +37,7 @@ class xsd(xmlNamespace):
     def build_xsd_type(self, xsd_type):
         if xsd_type is None:
             return None
-        if isinstance(xsd_type, xsdElement):
+        if isinstance(xsd_type, XsdElement):
             type_name = xsd_type.name
             type_prefix = xsd_type.type_prefix
         else:
@@ -71,7 +71,7 @@ class xsd(xmlNamespace):
             return etree.SubElement(parent, tag, attrib=attrib)
 
     def xml(self, value, parent=None):
-        tag = xsd.build_tag(tag_name=self.name)
+        tag = Xsd.build_tag(tag_name=self.name)
         if parent is None:
             el = etree.Element(tag, nsmap=self.nsmap)
         else:
@@ -87,13 +87,13 @@ class xsd(xmlNamespace):
             return self.attrib[key]
 
 
-class xsdElement(xsd):
+class XsdElement(Xsd):
     tag = 'element'
 
     def xsd(self, parent=None):
         el = super().xsd(parent=parent)
         # handle inline types:
-        if isinstance(self.type, xsdElement):
+        if isinstance(self.type, XsdElement):
             if self.type.name is None:
                 inline_type = self.type.xsd(parent=el)
         return el

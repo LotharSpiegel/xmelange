@@ -16,10 +16,10 @@ Examples:
 ! Simple types cannot have attributes
 """
 
-from xmelange.xsd.elements import xsd, xsdElement
+from xmelange.xsd.elements import Xsd, XsdElement
 
 
-class xsdRestrictionFacet(xsd):
+class XsdRestrictionFacet(Xsd):
     tag = None
 
     def __init__(self, value):
@@ -32,27 +32,27 @@ class xsdRestrictionFacet(xsd):
         }
 
 
-class xsdRestrictionPattern(xsdRestrictionFacet):
+class XsdRestrictionPattern(XsdRestrictionFacet):
     tag = 'pattern'
 
 
-class xsdRestrictionMinIncluse(xsdRestrictionFacet):
+class XsdRestrictionMinIncluse(XsdRestrictionFacet):
     tag = 'minInclusive'
 
 
-class xsdRestrictionMaxIncluse(xsdRestrictionFacet):
+class XsdRestrictionMaxIncluse(XsdRestrictionFacet):
     tag = 'maxInclusive'
 
 
-class xsdRestrictionMinExclusive(xsdRestrictionFacet):
+class XsdRestrictionMinExclusive(XsdRestrictionFacet):
     tag = 'minExclusive'
 
 
-class xsdRestrictionMaxExclusive(xsdRestrictionFacet):
+class XsdRestrictionMaxExclusive(XsdRestrictionFacet):
     tag = 'maxExclusive'
 
 
-class xsdRestriction(xsd):
+class XsdRestriction(Xsd):
     tag = 'restriction'
 
     def __init__(self, base, facets):
@@ -75,7 +75,7 @@ class xsdRestriction(xsd):
         return el
 
 
-class xsdSimpleType(xsdElement):
+class XsdSimpleType(XsdElement):
     tag = 'simpleType'
 
     def __init__(self, name, restriction):
@@ -89,6 +89,6 @@ class xsdSimpleType(xsdElement):
 
     @classmethod
     def restriction(cls, name, base, facets):
-        xsd_restriction = xsdRestriction(base=base, facets=facets)
-        simple_type = xsdSimpleType(name=name, restriction=xsd_restriction)
+        xsd_restriction = XsdRestriction(base=base, facets=facets)
+        simple_type = XsdSimpleType(name=name, restriction=xsd_restriction)
         return simple_type

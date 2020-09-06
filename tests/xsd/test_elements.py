@@ -1,10 +1,10 @@
 import pytest
 
-from xmelange.xsd.elements import xsdElement
+from xmelange.xsd.elements import XsdElement
 
 
 def test_xsdElement_xsdFactory():
-    element = xsdElement(name='testElement', type='string')
+    element = XsdElement(name='testElement', type='string')
     xsd = element.xsd()
 
     assert 'element' in xsd.tag

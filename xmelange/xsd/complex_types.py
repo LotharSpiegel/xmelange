@@ -3,14 +3,14 @@ Complex types - in contrast to simple types - allow elements in their content
 and can have attributes
 """
 
-from xmelange.xsd.elements import xsd, xsdElement
+from xmelange.xsd.elements import Xsd, XsdElement
 
 
-class xsdAttribute(xsd):
+class XsdAttribute(Xsd):
     tag = 'attribute'
 
 
-class xsdSequence(xsd):
+class XsdSequence(Xsd):
     tag = 'sequence'
 
     def __init__(self, elements):
@@ -24,7 +24,7 @@ class xsdSequence(xsd):
         return sequence_element
 
 
-class xsdComplexType(xsdElement):
+class XsdComplexType(XsdElement):
     tag = 'complexType'
 
     def __init__(self, name, sequence=None, attributes=None, type_prefix=None):
@@ -42,21 +42,21 @@ class xsdComplexType(xsdElement):
         return element
 
 
-class xsdSequenceBuilder:
+class XsdSequenceBuilder:
 
     def __init__(self, host_builder=None):
         self._sequence = None
         self._elements = []
         self._host_builder = host_builder
 
-    def build(self):
-        self._sequence = xsdSequence(elements=self._elements)
+    def build_sequence(self):
+        self._sequence = XsdSequence(elements=self._elements)
         if self._host_builder is None:
             return self._sequence
         return self._host_builder
 
     def element(self, **kwargs):
-        self._elements.append(xsdElement(**kwargs))
+        self._elements.append(XsdElement(**kwargs))
         return self
 
     @property
@@ -64,7 +64,7 @@ class xsdSequenceBuilder:
         return self._sequence
 
 
-class xsdComplexTypeBuilder:
+class XsdComplexTypeBuilder:
 
     def __init__(self):
         self._name = None
@@ -73,7 +73,7 @@ class xsdComplexTypeBuilder:
         self._type_prefix = None
 
     def build(self):
-        return xsdComplexType(name=self._name,
+        return XsdComplexType(name=self._name,
                               sequence=self._sequence_builder.sequence if self._sequence_builder is not None else None,
                               attributes=self._attributes,
                               type_prefix=self._type_prefix)
@@ -83,9 +83,9 @@ class xsdComplexTypeBuilder:
         return self
 
     def attribute(self, **kwargs):
-        self._attributes.append(xsdAttribute(**kwargs))
+        self._attributes.append(XsdAttribute(**kwargs))
         return self
 
     def sequence(self):
-        self._sequence_builder = xsdSequenceBuilder(host_builder=self)
+        self._sequence_builder = XsdSequenceBuilder(host_builder=self)
         return self._sequence_builder
