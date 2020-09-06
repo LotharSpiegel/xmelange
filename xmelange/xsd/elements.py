@@ -1,7 +1,7 @@
 from lxml import etree
 
 
-class XmlNamespace:
+class XmlNameSpace:
 
     xsd_prefix = 'xsd'
 
@@ -11,11 +11,11 @@ class XmlNamespace:
     }
 
 
-class Xsd(XmlNamespace):
+class Xsd(XmlNameSpace):
 
     tag = None
     attrib = None
-    type_prefix = XmlNamespace.xsd_prefix
+    type_prefix = XmlNameSpace.xsd_prefix
 
     def __init__(self, **attrib):
         """attrib-dict:
@@ -31,8 +31,8 @@ class Xsd(XmlNamespace):
             return tag_name
         return etree.QName(prefix, tag_name)
 
-    def build_xsd_tag(self, type):
-        return etree.QName(self.nsmap[self.xsd_prefix], type)
+    def build_xsd_tag(self, el_type):
+        return etree.QName(self.nsmap[self.xsd_prefix], el_type)
 
     def build_xsd_type(self, xsd_type):
         if xsd_type is None:
@@ -61,7 +61,7 @@ class Xsd(XmlNamespace):
         return attrib
 
     def xsd(self, parent=None):
-        tag = self.build_xsd_tag(type=self.tag)
+        tag = self.build_xsd_tag(el_type=self.tag)
         attrib = self.xsd_attributes()
         if parent is None:
             return etree.Element(tag, attrib=attrib, nsmap=self.nsmap)
@@ -88,6 +88,7 @@ class Xsd(XmlNamespace):
 
 
 class XsdElement(Xsd):
+
     tag = 'element'
 
     def xsd(self, parent=None):

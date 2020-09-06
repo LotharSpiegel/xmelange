@@ -9,7 +9,7 @@ Examples:
 
 <xsd:simpleType name="SKU">
   <xsd:restriction base="xsd:string">
-    <xsd:pattern value="\d{3}-[A-Z]{2}"/>
+    <xsd:pattern value="\\d{3}-[A-Z]{2}"/>
   </xsd:restriction>
 </xsd:simpleType>
 
@@ -36,11 +36,11 @@ class XsdRestrictionPattern(XsdRestrictionFacet):
     tag = 'pattern'
 
 
-class XsdRestrictionMinIncluse(XsdRestrictionFacet):
+class XsdRestrictionMinInclusive(XsdRestrictionFacet):
     tag = 'minInclusive'
 
 
-class XsdRestrictionMaxIncluse(XsdRestrictionFacet):
+class XsdRestrictionMaxInclusive(XsdRestrictionFacet):
     tag = 'maxInclusive'
 
 

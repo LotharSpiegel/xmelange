@@ -3,7 +3,9 @@ import pytest
 from xmelange.xsd.elements import XsdElement
 
 
-def test_xsdElement_xsdFactory():
+# TODO: write test class for every class in xmelange.xsd.elements
+
+def test_XsdElement_xsdFactory():
     element = XsdElement(name='testElement', type='string')
     xsd = element.xsd()
 
